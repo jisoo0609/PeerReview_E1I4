@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Board Details</title>
+</head>
+<body>
+<h1 th:text="${board.name}"></h1>
+
+<!-- 게시글 생성 버튼 -->
+<a th:href="@{/boards/{boardId}/article(boardId=${board.id})}">
+    <button>게시글 작성하기</button>
+</a>
+<hr>
+<!-- 서치 기능 -->
+<form th:action="@{/boards/{boardId}/search(boardId=${board.id})}" method="get" id="search-input" name="search">
+    <input type="hidden" name="boardId" th:value="${board.id}">
+    <label>
+        <select name="type" class="type-box">
+            <option value="title">제목</option>
+            <option value="content">내용</option>
+        </select>
+    </label>
+    <div class="search-input">
+        <input class="inputId" type="text" name="keyword" placeholder="검색어 입력" th:value="${param.keyword}">
+    </div>
+    <div class="search-btn">
+        <a th:href="@{/boards/{boardId}/search(boardId=${board.id})}">
+            <input class="submitBtn" type="submit" value="검색하기">
+        </a>
+    </div>
+</form>
+
+<hr>
+<!-- 게시글이 없을 경우 -->
+<div th:if="${board.articles.isEmpty()}">
+    <p>게시글이 없습니다.</p>
+</div>
+
+<!-- 게시글이 있는 경우 -->
+<div th:unless="${board.articles.isEmpty()}" th:each="article : ${sortedArticles}">
+    <a th:href="@{/article/{articleId}(articleId=${article.id})}">[[${article.title}]]</a>
+</div>
+
+<hr>
+<!-- 메인(게시판 리스트)으로 돌아가는 링크 -->
+<a href="/boards">Back</a>
+
+</body>
+</html>

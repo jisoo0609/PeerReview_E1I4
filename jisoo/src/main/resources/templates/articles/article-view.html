@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Article</title>
+</head>
+<body>
+
+<h1>[[${article.title}]]</h1>
+<p>작성자: [[${article.author}]]</p>
+    <a th:href="@{/article/{articleId}/update(articleId=${article.id})}">
+        <button type="button">수정하기</button>
+    </a>
+    <a th:href="@{/article/{articleId}/delete(articleId=${article.id})}">
+        <button type="button">삭제하기</button>
+    </a>
+<hr>
+<p> [[${article.content}]]</p>
+<br>
+
+<!-- 해시태그 보여주기 -->
+<div th:if="${article.articleHashtags.isEmpty()}">
+    <p>태그가 없습니다.</p>
+</div>
+
+<div th:unless="${article.articleHashtags.isEmpty()}" th:each="tag : ${article.articleHashtags}">
+    [[${tag.hashtag}]]
+</div>
+<hr>
+
+<!-- 댓글 보여주기 -->
+<h3>댓글</h3>
+    <a th:href="@{/article/{articleId}/comment(articleId=${article.id})}">
+        <button type="button">댓글 작성하기</button>
+    </a>
+    <div th:if="${article.comments.isEmpty()}">
+        <p>댓글이 없습니다.</p>
+    </div>
+
+    <div th:unless="${article.comments.isEmpty()}" th:each="comment : ${article.comments}">
+        [[${comment.content}]]
+        <a th:href="@{/article/{articleId}/comment/{commentId}/update(articleId=${article.id}, commentId=${comment.id})}">
+            <button type="button">댓글 수정하기</button>
+        </a>
+        <a th:href="@{/article/{articleId}/comment/{commentId}/delete(articleId=${article.id}, commentId=${comment.id})}">
+            <button type="button">댓글 삭제하기</button>
+        </a>
+    </div>
+<hr>
+<!-- 게시글 리스트로 돌아가기-->
+<a th:href="@{/boards/{boardId}(boardId=${boardId})}">Back</a>
+</body>
+</html>
