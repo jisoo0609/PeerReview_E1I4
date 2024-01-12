@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<h1>[[${board.boardName}]]</h1>
+<form
+        th:action="@{/boards/{boardId}/search(boardId=${board.id})}"
+        method="post"
+        th:value="${board.id}">
+  <label>
+    <select name="category">
+      <option value="title">제목</option>
+      <option value="content">내용</option>
+    </select>
+  </label>
+  <label>
+    <input type="text" name="search">
+  </label>
+  <input type="submit" value="검색">
+</form>
+
+<div th:if="${articles.isEmpty()}">
+  <p>No Articles Here...</p>
+</div>
+<div th:unless="${articles.isEmpty()}">
+  <p th:each="article : ${articles}">
+    <a th:href="@{/article/{articleId}(articleId=${article.id})}">[[${article.title}]]</a>
+  </p>
+</div>
+<form th:action="@{/boards/{boardId}(boardId=${board.id})/article}" method="get"
+      class="mb-3">
+  <input type="submit" value="게시글 작성">
+</form>
+<form action="/boards" method="get">
+  <input type="submit" value="뒤로 가기">
+</form>
+</body>
+</html>
