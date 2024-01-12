@@ -2,7 +2,6 @@ package com.example.lion.controller;
 
 import com.example.lion.entity.Board;
 import com.example.lion.entity.Comment;
-import com.example.lion.repository.CommentRepository;
 import com.example.lion.service.BoardService;
 import com.example.lion.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,8 +112,10 @@ public class BoardController {
                               Model model) throws Exception{
 
         Board boardTemp = boardService.boardView(id);
+
         boardTemp.setTitle(board.getTitle());
         boardTemp.setContent(board.getContent());
+        boardTemp.setCategory(board.getCategory());
 
         boardService.write(boardTemp);
 
@@ -158,7 +159,7 @@ public class BoardController {
 
 
     // 댓글 삭제
-    @GetMapping("/comment/delete/{id}")
+    @PostMapping("/comment/delete/{id}")
     public String deleteComment(@PathVariable(name = "id") Long id,
                                 @RequestParam(name = "password") String password,
                                 @RequestParam(name = "board_id") Long board_id,
@@ -207,5 +208,16 @@ public class BoardController {
             model.addAttribute("searchUrl", "/board/view?id=" + id + "&category=" + category);
             return "message";
         }
+    }
+
+    @GetMapping("/hashtag") // localhost:8080/hashtag?tag=dream
+    public String boardHashtag(@RequestParam(name = "tag") String tag,
+                               Model model){
+        List<Board> list = boardService.boardSearchByTag(tag);
+        Collections.reverse(list);
+
+        model.addAttribute("list", list);
+        model.addAttribute("tag", tag);
+        return "boardlisthash";
     }
 }
