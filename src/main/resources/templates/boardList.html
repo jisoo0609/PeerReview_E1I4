@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+  <meta charset="UTF-8">
+  <title>Board List</title>
+</head>
+<body>
+  <h1>Board List</h1>
+  <div th:each="board : ${boardList}">
+    <p>
+      <a th:href="@{/boards/{boardId}(boardId=${board.id})}">
+        [[${board.boardName}]]
+      </a>
+    </p>
+  </div>
+  <a href="/article">전체 게시글로 이동</a>
+</body>
+</html>
