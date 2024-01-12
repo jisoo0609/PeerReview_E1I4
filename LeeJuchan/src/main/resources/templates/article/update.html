@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+<h1 class="page-title">게시글 수정하기</h1>
+<div class="page-box">
+    <form th:action="@{/boards/article/{id}/update(id=${article.id})}" method="post" onsubmit="return pwdCheck()">
+        <div class="input-div">
+            <select name="topic" required>
+                <option value="">주제 선택</option>
+                <option value="자유">자유</option>
+                <option value="개발">개발</option>
+                <option value="일상">일상</option>
+                <option value="사건사고">사건사고</option>
+            </select>
+        </div>
+        <div class="input-div">
+            <label>
+                제목 <br>
+                <input type="text" name="title" id="input-title" required>
+            </label>
+        </div>
+        <div class="input-div">
+            <label>
+                내용 <br>
+                <input type="text" name="content" id="input-body" required>
+            </label>
+        </div>
+        <div class="input-div">
+            <label>
+                비밀번호 확인 <br>
+                <input type="password" name="password" required id="pwd">
+            </label>
+        </div>
+        <div class="mt-5">
+            <input type="submit">
+        </div>
+    </form>
+</div>
+
+<script th:inline="javascript">
+    function pwdCheck() {
+        var pwd1 = document.getElementById("pwd").value;
+        var pwd2 = [[${article.password}]];
+        if(pwd1 == pwd2) {
+            if(window.confirm("게시글을 수정하시겠습니까?"))
+                return true;
+        }
+        else {
+            alert("비밀번호가 일치하지 않습니다.")
+            return false;
+        }
+    }
+</script>
+</body>
+</html>
